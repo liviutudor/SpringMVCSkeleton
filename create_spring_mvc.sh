@@ -198,7 +198,7 @@ APP_CONTEXT_XML="
 </beans>
 "
 
-PAGE_JSP="
+HOME_JSP="
 <%@ taglib uri=\"http://java.sun.com/jstl/core\" prefix=\"c\"%>\n
 <%@page import=\"$PKG_NAME.*\"%>\n
 <jsp:useBean id=\"param_name\" scope=\"request\" class=\"java.lang.String\" />\n
@@ -293,7 +293,7 @@ echo -e $SERVLET_XML > $SERVLET_FILE
 echo -e $APP_CONTEXT_XML > appicationContext.xml
 mkdir jsp
 cd jsp
-echo -e $PAGE_JSP > page.jsp
+echo -e $HOME_JSP > home.jsp
 cd ..
 cd ..
 cd ..
