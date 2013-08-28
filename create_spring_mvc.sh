@@ -6,11 +6,15 @@
 
 CURR_YEAR=`date +%Y`
 
+# Name of the project (directory will be created with same name)
 PRJ_NAME="livmvc"
 PRJ_DESC="This is a skeleton generated automatically by https://github.com/liviutudor/SpringMVCSkeleton"
 PRJ_URL="http://liviutudor.com"
+# version will be set to $PRJ_VERSION-SNAPSHOT
 PRJ_VERSION="0.0.1"
+# for the pom
 GROUP_ID="liviutudor"
+# java package for sources
 PKG_NAME="liv"
 
 POM_XML="
@@ -94,7 +98,7 @@ POM_XML="
 	</dependencies>
 
 	<build>
-		<finalName>megoget.webapp</finalName>
+		<finalName>$PRJ_NAME</finalName>
 		<defaultGoal>install</defaultGoal>
 		<plugins>
 			<plugin>
@@ -110,8 +114,7 @@ POM_XML="
 "
 
 WEB_XML="
-<!DOCTYPE web-app PUBLIC \"-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN\" \"http://java.sun.com/dtd/web-app_2_3.dtd\" >
-
+<!DOCTYPE web-app PUBLIC \"-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN\" \"http://java.sun.com/dtd/web-app_2_3.dtd\">
 <web-app>
   <display-name>$PRJ_NAME</display-name>
      <servlet>
@@ -174,7 +177,10 @@ mkdir resources
 # src/main/webapp
 mkdir webapp
 cd webapp
+mkdir WEB-INF
+cd WEB-INF
 echo $WEB_XML > web.xml
+cd ..
 cd ..
 cd ..
 # source/test
