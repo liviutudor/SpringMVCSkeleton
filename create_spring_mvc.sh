@@ -248,6 +248,20 @@ public class HomeController {\n
 }
 "
 
+HOME_TEST_JAVA="
+package $PKG_NAME;\n
+\n
+import org.junit.Test;\n
+import static org.junit.Assert.assertEquals;\n
+\n
+public class HomeControllerTest {\n
+	@Test\n
+	public void testSimpleStuff() {\n
+		assertEquals( \"1\", \"1\" );\n
+	}\n
+}
+"
+
 # Top level dir
 mkdir $PRJ_NAME
 cd $PRJ_NAME
@@ -302,6 +316,9 @@ cd ..
 mkdir test
 cd test
 mkdir java
+cd java
+echo -e $HOME_TEST_JAVA > HomeControllerTest.java
+cd ..
 cd ..
 
 cd ..
