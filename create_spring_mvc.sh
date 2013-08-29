@@ -16,10 +16,15 @@ PRJ_VERSION="0.0.1"
 GROUP_ID="liviutudor"
 # java package for sources
 PKG_NAME="liv"
+TMPDIR="/tmp/$PRJ_NAME.$$"
 
-POM_XML="
-<project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
-	xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd\">
+# Top level dir
+mkdir -p $TMPDIR/src/main/{resources/config,webapp/WEB-INF/jsp,java/$PKG_NAME} $TMPDIR/src/test/java $TMPDIR/target
+touch $TMPDIR/src/main/resources/config/$PRJ_NAME.properties
+
+cat >${TMPDIR}/pom.xml<<'POM_XML'
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>$GROUP_ID</groupId>
 	<artifactId>$PRJ_NAME</artifactId>
@@ -46,12 +51,12 @@ POM_XML="
 			<url>http://repo1.maven.org/maven2</url>
 		</repository>
 	</repositories>
-	
+
 	<properties>
 		<project.build.jdkVersion>1.6</project.build.jdkVersion>
 		<spring.version>3.0.6.RELEASE</spring.version>
 	</properties>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -97,7 +102,7 @@ POM_XML="
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<finalName>$PRJ_NAME</finalName>
 		<defaultGoal>install</defaultGoal>
@@ -105,17 +110,17 @@ POM_XML="
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>\${project.build.jdkVersion}</source>
-					<target>\${project.build.jdkVersion}</target>
+					<source>${project.build.jdkVersion}</source>
+					<target>${project.build.jdkVersion}</target>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
 </project>
-"
+POM_XML
 
-WEB_XML="
-<!DOCTYPE web-app PUBLIC \"-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN\" \"http://java.sun.com/dtd/web-app_2_3.dtd\">
+cat > $TMPDIR/src/main/webapp/WEB-INF/web.xml<<'WEB_XML'
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
 <web-app>
   <display-name>$PRJ_NAME</display-name>
      <servlet>
@@ -123,108 +128,109 @@ WEB_XML="
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
-    
+
     <servlet-mapping>
         <servlet-name>$PRJ_NAME</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
-    
+
     <!-- allow robots.txt -->
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>*.txt</url-pattern>
     </servlet-mapping>
-    
+
     <!-- allow favicon.ico -->
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>*.ico</url-pattern>
     </servlet-mapping>
-    
+
     <!-- allow everything under /img/ -->
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/img/*</url-pattern>
     </servlet-mapping>
-    
+
     <!-- allow everything under css -->
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/css/*</url-pattern>
     </servlet-mapping>
 </web-app>
-"
+WEB_XML
 
-SERVLET_XML="
-<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-<beans xmlns=\"http://www.springframework.org/schema/beans\"
-       xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
-       xmlns:p=\"http://www.springframework.org/schema/p\"
-       xmlns:context=\"http://www.springframework.org/schema/context\"
-       xsi:schemaLocation=\"
+cat >$TMPDIR/src/main/webapp/WEB-INF/$PRJ_NAME-servlet.xml<<'SERVLET_XML'
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context-3.0.xsd\">
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-    <context:component-scan base-package=\"$PKG_NAME\"/>
+    <context:component-scan base-package="$PKG_NAME"/>
 
-    <bean id=\"viewResolver\" class=\"org.springframework.web.servlet.view.UrlBasedViewResolver\">
-        <property name=\"viewClass\" value=\"org.springframework.web.servlet.view.JstlView\"/>
-        <property name=\"prefix\" value=\"/WEB-INF/jsp/\"/>
-        <property name=\"suffix\" value=\".jsp\"/>
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
     </bean>
 
 </beans>
-"
+SERVLET_XML
 
-APP_CONTEXT_XML="
-<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-<beans xmlns=\"http://www.springframework.org/schema/beans\"
-        xmlns:context=\"http://www.springframework.org/schema/context\"
-        xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
-        xsi:schemaLocation=\"http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
-       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd\">
+cat >$TMPDIR/src/main/webapp/WEB-INF/applicationContext.xml<<'APP_CONTEXT_XML'
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
         <bean
-                class=\"org.springframework.beans.factory.config.PropertyPlaceholderConfigurer\">
-                <property name=\"locations\">
+                class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+                <property name="locations">
                         <list>
                                 <value>classpath*:config/*.properties</value>
                         </list>
                 </property>
-                <property name=\"ignoreResourceNotFound\" value=\"true\" />
+                <property name="ignoreResourceNotFound" value="true" />
         </bean>
 </beans>
-"
+APP_CONTEXT_XML
 
-HOME_JSP="
-<%@ taglib uri=\"http://java.sun.com/jstl/core\" prefix=\"c\"%>
-<%@page import=\"$PKG_NAME.*\"%>
-<jsp:useBean id=\"param_name\" scope=\"request\" class=\"java.lang.String\" />
+cat>$TMPDIR/src/main/webapp/WEB-INF/jsp/home.jsp<<'HOME_JSP'
+<%@ taglib uri="http://java.sun.com/jstl/core" prefix="c"%>
+<%@page import="$PKG_NAME.*"%>
+<jsp:useBean id="param_name" scope="request" class="java.lang.String" />
 <html>
 <head>
 <title>$PRJ_NAME</title>
 </head>
 <body>
-<p>Hello, <c:out value=\"\${param_name}\"/>!</p>
+<p>Hello, <c:out value="\${param_name}"/>!</p>
 </body>
 </html>
-"
+HOME_JSP
 
-ROBOTS_TXT="
+cat > $TMPDIR/src/main/webapp/robots.txt<<'ROBOTS_TXT'
 # Disallow robots to index any part of our contents
 User-agent: *
 Disallow: /
-"
+ROBOTS_TXT
 
-INDEX_JSP="
+
+cat >$TMPDIR/src/main/webapp/index.jsp<<'INDEX_JSP'
 <%
-response.sendRedirect( \"/home\");
+response.sendRedirect( "/home");
 %>
-"
+INDEX_JSP
 
-HOME_JAVA="
+cat >$TMPDIR/src/main/java/$PKG_NAME/HomeController.java<<'HOME_JAVA'
 package $PKG_NAME;
 
 import java.io.IOException;
@@ -241,14 +247,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class HomeController {
-    @RequestMapping(value = \"/home\", method = RequestMethod.GET)
+    @RequestMapping(value = "/home", method = RequestMethod.GET)
     public ModelAndView home(HttpSession session, HttpServletResponse response) throws IOException {
-        return new ModelAndView(\"home\", \"param_name\", \"world\");
+        return new ModelAndView("home", "param_name", "world");
     }
 }
-"
+HOME_JAVA
 
-HOME_TEST_JAVA="
+cat >$TMPDIR/src/test/java/HomeControllerTest.java<<'HOME_TEST_JAVA'
 package $PKG_NAME;
 
 import org.junit.Test;
@@ -257,71 +263,9 @@ import static org.junit.Assert.assertEquals;
 public class HomeControllerTest {
 	@Test
 	public void testSimpleStuff() {
-		assertEquals( \"1\", \"1\" );
+		assertEquals( "1", "1" );
 	}
 }
-"
+HOME_TEST_JAVA
 
-# Top level dir
-mkdir $PRJ_NAME
-cd $PRJ_NAME
-
-echo "$POM_XML" > pom.xml
-mkdir src
-mkdir target
-
-# source
-cd src
-# src/main
-mkdir main
-cd main
-# src/main/java
-mkdir java
-cd java 
-# src/main/java/package
-mkdir $PKG_NAME
-cd $PKG_NAME
-echo "$HOME_JAVA" > HomeController.java
-cd ..
-
-cd ..
-# src/main/resources
-mkdir resources
-cd resources
-# src/main/resources/config
-mkdir config
-cd config
-touch $PRJ_NAME.properties
-cd ..
-cd ..
-# src/main/webapp
-mkdir webapp
-cd webapp
-echo "$ROBOTS_TXT" > robots.txt
-echo "$INDEX_JSP" > index.jsp
-mkdir WEB-INF
-cd WEB-INF
-echo "$WEB_XML" > web.xml
-SERVLET_FILE="$PRJ_NAME-servlet.xml"
-echo "$SERVLET_XML" > $SERVLET_FILE
-echo "$APP_CONTEXT_XML" > appicationContext.xml
-mkdir jsp
-cd jsp
-echo "$HOME_JSP" > home.jsp
-cd ..
-cd ..
-cd ..
-cd ..
-# source/test
-mkdir test
-cd test
-mkdir java
-cd java
-echo "$HOME_TEST_JAVA" > HomeControllerTest.java
-cd ..
-cd ..
-
-cd ..
-
-# Finally back the f.. out to where we started
-cd ..
+mv $TMPDIR $HOME/$PRJ_NAME
