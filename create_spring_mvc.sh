@@ -22,7 +22,7 @@ TMPDIR="/tmp/$PRJ_NAME.$$"
 mkdir -p $TMPDIR/src/main/{resources/config,webapp/WEB-INF/jsp,java/$PKG_NAME} $TMPDIR/src/test/java $TMPDIR/target
 touch $TMPDIR/src/main/resources/config/$PRJ_NAME.properties
 
-cat >${TMPDIR}/pom.xml<<"POM_XML"
+cat >${TMPDIR}/pom.xml<<POM_XMLEXPAND
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -34,6 +34,9 @@ cat >${TMPDIR}/pom.xml<<"POM_XML"
 	<inceptionYear>$CURR_YEAR</inceptionYear>
 	<description>$PRJ_DESC</description>
 	<url>$PRJ_URL</url>
+POM_XMLEXPAND
+
+cat >>${TMPDIR}/pom.xml<<'POM_XML'
 	<developers>
 		<developer>
 			<name>Liviu Tudor</name>
@@ -78,33 +81,38 @@ cat >${TMPDIR}/pom.xml<<"POM_XML"
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>\${spring.version}</version>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
-			<version>\${spring.version}</version>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>\${spring.version}</version>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>\${spring.version}</version>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>\${spring.version}</version>
+			<version>${spring.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
 	<build>
+POM_XML
+
+cat>>${TMPDIR}/pom.xml<<POM_XMLEXPAND
 		<finalName>$PRJ_NAME</finalName>
+POM_XMLEXPAND
+cat>>${TMPDIR}/pom.xml<<'POM_XML'
 		<defaultGoal>install</defaultGoal>
 		<plugins>
 			<plugin>
