@@ -23,6 +23,9 @@ mkdir -p $TMPDIR/src/main/{resources/config,webapp/WEB-INF/jsp,java/$PKG_NAME} $
 touch $TMPDIR/src/main/resources/config/$PRJ_NAME.properties
 
 cat >${TMPDIR}/pom.xml<<POM_XMLEXPAND
+=======
+cat >${TMPDIR}/pom.xml <<POM_XML
+>>>>>>> 1441af4378ce5cf5322b4a5f3a85aa0075646281
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -34,6 +37,9 @@ cat >${TMPDIR}/pom.xml<<POM_XMLEXPAND
 	<inceptionYear>$CURR_YEAR</inceptionYear>
 	<description>$PRJ_DESC</description>
 	<url>$PRJ_URL</url>
+POM_XMLEXPAND
+
+cat >>${TMPDIR}/pom.xml<<'POM_XML'
 	<developers>
 		<developer>
 			<name>Liviu Tudor</name>
@@ -78,33 +84,38 @@ cat >${TMPDIR}/pom.xml<<POM_XMLEXPAND
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>\${spring.version}</version>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
-			<version>\${spring.version}</version>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>\${spring.version}</version>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>\${spring.version}</version>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>\${spring.version}</version>
+			<version>${spring.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
 	<build>
+POM_XML
+
+cat>>${TMPDIR}/pom.xml<<POM_XMLEXPAND
 		<finalName>$PRJ_NAME</finalName>
+POM_XMLEXPAND
+cat>>${TMPDIR}/pom.xml<<'POM_XML'
 		<defaultGoal>install</defaultGoal>
 		<plugins>
 			<plugin>
@@ -117,7 +128,7 @@ cat >${TMPDIR}/pom.xml<<POM_XMLEXPAND
 		</plugins>
 	</build>
 </project>
-POM_XMLEXPAND
+POM_XML
 
 cat > $TMPDIR/src/main/webapp/WEB-INF/web.xml <<WEB_XML
 <!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
