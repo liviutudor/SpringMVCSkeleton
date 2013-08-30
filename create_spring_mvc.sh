@@ -117,7 +117,7 @@ cat >${TMPDIR}/pom.xml<<POM_XMLEXPAND
 		</plugins>
 	</build>
 </project>
-POM_XML
+POM_XMLEXPAND
 
 cat > $TMPDIR/src/main/webapp/WEB-INF/web.xml <<WEB_XML
 <!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
