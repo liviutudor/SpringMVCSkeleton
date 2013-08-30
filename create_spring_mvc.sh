@@ -22,7 +22,7 @@ TMPDIR="/tmp/$PRJ_NAME.$$"
 mkdir -p $TMPDIR/src/main/{resources/config,webapp/WEB-INF/jsp,java/$PKG_NAME} $TMPDIR/src/test/java/$PKG_NAME $TMPDIR/target
 touch $TMPDIR/src/main/resources/config/$PRJ_NAME.properties
 
-cat >${TMPDIR}/pom.xml <<POM_XML
+cat >${TMPDIR}/pom.xml<<POM_XMLEXPAND
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
