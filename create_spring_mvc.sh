@@ -317,7 +317,10 @@ mkdir test
 cd test
 mkdir java
 cd java
+mkdir $PKG_NAME
+cd $PKG_NAME
 echo "$HOME_TEST_JAVA" > HomeControllerTest.java
+cd ..
 cd ..
 cd ..
 
