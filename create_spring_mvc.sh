@@ -110,8 +110,8 @@ cat >${TMPDIR}/pom.xml<<"POM_XML"
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>${project.build.jdkVersion}</source>
-					<target>${project.build.jdkVersion}</target>
+					<source>\${project.build.jdkVersion}</source>
+					<target>\${project.build.jdkVersion}</target>
 				</configuration>
 			</plugin>
 		</plugins>
