@@ -23,9 +23,6 @@ mkdir -p $TMPDIR/src/main/{resources/config,webapp/WEB-INF/jsp,java/$PKG_NAME} $
 touch $TMPDIR/src/main/resources/config/$PRJ_NAME.properties
 
 cat >${TMPDIR}/pom.xml<<POM_XMLEXPAND
-=======
-cat >${TMPDIR}/pom.xml <<POM_XML
->>>>>>> 1441af4378ce5cf5322b4a5f3a85aa0075646281
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -121,8 +118,8 @@ cat>>${TMPDIR}/pom.xml<<'POM_XML'
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>\${project.build.jdkVersion}</source>
-					<target>\${project.build.jdkVersion}</target>
+					<source>${project.build.jdkVersion}</source>
+					<target>${project.build.jdkVersion}</target>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -214,7 +211,7 @@ cat >$TMPDIR/src/main/webapp/WEB-INF/applicationContext.xml <<APP_CONTEXT_XML
 </beans>
 APP_CONTEXT_XML
 
-cat>$TMPDIR/src/main/webapp/WEB-INF/jsp/home.jsp <<HOME_JSP
+cat>$TMPDIR/src/main/webapp/WEB-INF/jsp/home.jsp <<'HOME_JSP'
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c"%>
 <%@page import="$PKG_NAME.*"%>
 <jsp:useBean id="param_name" scope="request" class="java.lang.String" />
@@ -223,7 +220,7 @@ cat>$TMPDIR/src/main/webapp/WEB-INF/jsp/home.jsp <<HOME_JSP
 <title>$PRJ_NAME</title>
 </head>
 <body>
-<p>Hello, <c:out value="\${param_name}"/>!</p>
+<p>Hello, <c:out value="${param_name}"/>!</p>
 </body>
 </html>
 HOME_JSP
