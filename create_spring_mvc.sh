@@ -19,10 +19,10 @@ PKG_NAME="liv"
 TMPDIR="/tmp/$PRJ_NAME.$$"
 
 # Top level dir
-mkdir -p $TMPDIR/src/main/{resources/config,webapp/WEB-INF/jsp,java/$PKG_NAME} $TMPDIR/src/test/java $TMPDIR/target
+mkdir -p $TMPDIR/src/main/{resources/config,webapp/WEB-INF/jsp,java/$PKG_NAME} $TMPDIR/src/test/java/$PKG_NAME $TMPDIR/target
 touch $TMPDIR/src/main/resources/config/$PRJ_NAME.properties
 
-cat >${TMPDIR}/pom.xml<<"POM_XML"
+cat >${TMPDIR}/pom.xml <<POM_XML
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -119,7 +119,7 @@ cat >${TMPDIR}/pom.xml<<"POM_XML"
 </project>
 POM_XML
 
-cat > $TMPDIR/src/main/webapp/WEB-INF/web.xml<<'WEB_XML'
+cat > $TMPDIR/src/main/webapp/WEB-INF/web.xml <<WEB_XML
 <!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
 <web-app>
   <display-name>$PRJ_NAME</display-name>
@@ -160,7 +160,7 @@ cat > $TMPDIR/src/main/webapp/WEB-INF/web.xml<<'WEB_XML'
 </web-app>
 WEB_XML
 
-cat >$TMPDIR/src/main/webapp/WEB-INF/$PRJ_NAME-servlet.xml<<'SERVLET_XML'
+cat >$TMPDIR/src/main/webapp/WEB-INF/$PRJ_NAME-servlet.xml <<SERVLET_XML
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -183,7 +183,7 @@ cat >$TMPDIR/src/main/webapp/WEB-INF/$PRJ_NAME-servlet.xml<<'SERVLET_XML'
 </beans>
 SERVLET_XML
 
-cat >$TMPDIR/src/main/webapp/WEB-INF/applicationContext.xml<<'APP_CONTEXT_XML'
+cat >$TMPDIR/src/main/webapp/WEB-INF/applicationContext.xml <<APP_CONTEXT_XML
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
         xmlns:context="http://www.springframework.org/schema/context"
@@ -203,7 +203,7 @@ cat >$TMPDIR/src/main/webapp/WEB-INF/applicationContext.xml<<'APP_CONTEXT_XML'
 </beans>
 APP_CONTEXT_XML
 
-cat>$TMPDIR/src/main/webapp/WEB-INF/jsp/home.jsp<<'HOME_JSP'
+cat>$TMPDIR/src/main/webapp/WEB-INF/jsp/home.jsp <<HOME_JSP
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c"%>
 <%@page import="$PKG_NAME.*"%>
 <jsp:useBean id="param_name" scope="request" class="java.lang.String" />
@@ -217,20 +217,20 @@ cat>$TMPDIR/src/main/webapp/WEB-INF/jsp/home.jsp<<'HOME_JSP'
 </html>
 HOME_JSP
 
-cat > $TMPDIR/src/main/webapp/robots.txt<<'ROBOTS_TXT'
+cat > $TMPDIR/src/main/webapp/robots.txt <<ROBOTS_TXT
 # Disallow robots to index any part of our contents
 User-agent: *
 Disallow: /
 ROBOTS_TXT
 
 
-cat >$TMPDIR/src/main/webapp/index.jsp<<'INDEX_JSP'
+cat >$TMPDIR/src/main/webapp/index.jsp <<INDEX_JSP
 <%
 response.sendRedirect( "/home");
 %>
 INDEX_JSP
 
-cat >$TMPDIR/src/main/java/$PKG_NAME/HomeController.java<<'HOME_JAVA'
+cat >$TMPDIR/src/main/java/$PKG_NAME/HomeController.java <<HOME_JAVA
 package $PKG_NAME;
 
 import java.io.IOException;
@@ -254,7 +254,7 @@ public class HomeController {
 }
 HOME_JAVA
 
-cat >$TMPDIR/src/test/java/HomeControllerTest.java<<'HOME_TEST_JAVA'
+cat >$TMPDIR/src/test/java/$PKG_NAME/HomeControllerTest.java <<HOME_TEST_JAVA
 package $PKG_NAME;
 
 import org.junit.Test;
