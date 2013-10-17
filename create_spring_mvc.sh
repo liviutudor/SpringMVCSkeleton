@@ -8,6 +8,11 @@ CURR_YEAR=`date +%Y`
 
 # Name of the project (directory will be created with same name)
 PRJ_NAME="livmvc"
+if [ "$1" != "" ] ; then
+	echo "Using project name $PRJ_NAME"
+	PRJ_NAME="$1"
+fi
+
 PRJ_DESC="This is a skeleton generated automatically by https://github.com/liviutudor/SpringMVCSkeleton"
 PRJ_URL="http://liviutudor.com"
 # version will be set to $PRJ_VERSION-SNAPSHOT
