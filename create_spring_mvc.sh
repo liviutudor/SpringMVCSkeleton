@@ -216,7 +216,7 @@ cat >$TMPDIR/src/main/webapp/WEB-INF/applicationContext.xml <<APP_CONTEXT_XML
 </beans>
 APP_CONTEXT_XML
 
-cat>$TMPDIR/src/main/webapp/WEB-INF/jsp/home.jsp <<'HOME_JSP'
+cat > $TMPDIR/src/main/webapp/WEB-INF/jsp/home.jsp << HOME_JSP
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c"%>
 <%@page import="$PKG_NAME.*"%>
 <jsp:useBean id="param_name" scope="request" class="java.lang.String" />
@@ -225,7 +225,7 @@ cat>$TMPDIR/src/main/webapp/WEB-INF/jsp/home.jsp <<'HOME_JSP'
 <title>$PRJ_NAME</title>
 </head>
 <body>
-<p>Hello, <c:out value="${param_name}"/>!</p>
+<p>Hello, <c:out value="\${param_name}"/>!</p>
 </body>
 </html>
 HOME_JSP
