@@ -62,7 +62,7 @@ cat >>${TMPDIR}/pom.xml<<'POM_XML'
 
 	<properties>
 		<project.build.jdkVersion>1.6</project.build.jdkVersion>
-		<spring.version>3.0.6.RELEASE</spring.version>
+		<spring.version>4.0.3.RELEASE</spring.version>
 	</properties>
 
 	<dependencies>
