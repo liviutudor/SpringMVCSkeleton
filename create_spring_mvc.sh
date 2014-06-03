@@ -62,6 +62,12 @@ cat >>${TMPDIR}/pom.xml<<'POM_XML'
 
 	<properties>
 		<project.build.jdkVersion>1.6</project.build.jdkVersion>
+
+		<maven.compiler.version>3.1</maven.compiler.version>
+		<maven.resources.version>2.6</maven.resources.version>
+		<maven.surefire.version>2.14.1</maven.surefire.version>
+		<maven.war.version>2.4</maven.war.version>
+
 		<spring.version>4.0.3.RELEASE</spring.version>
 		<junit.version>4.10</junit.version>
 	</properties>
@@ -123,11 +129,28 @@ cat>>${TMPDIR}/pom.xml<<'POM_XML'
 		<defaultGoal>install</defaultGoal>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven.compiler.version}</version>
 				<configuration>
 					<source>${project.build.jdkVersion}</source>
 					<target>${project.build.jdkVersion}</target>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${maven.surefire.version}</version>
+<!--				<configuration>
+					<excludes>
+						<exclude>**/SomeTest</exclude>
+					</excludes>
+				</configuration> -->
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>${maven.war.version}</version>
 			</plugin>
 		</plugins>
 	</build>
