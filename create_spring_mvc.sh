@@ -62,6 +62,8 @@ cat >>${TMPDIR}/pom.xml<<'POM_XML'
 
 	<properties>
 		<project.build.jdkVersion>1.6</project.build.jdkVersion>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<maven.compiler.version>3.1</maven.compiler.version>
 		<maven.resources.version>2.6</maven.resources.version>
@@ -120,6 +122,11 @@ cat >>${TMPDIR}/pom.xml<<'POM_XML'
 	</dependencies>
 
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
 POM_XML
 
 cat>>${TMPDIR}/pom.xml<<POM_XMLEXPAND
@@ -152,6 +159,15 @@ cat>>${TMPDIR}/pom.xml<<'POM_XML'
 				<artifactId>maven-war-plugin</artifactId>
 				<version>${maven.war.version}</version>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>			
 		</plugins>
 	</build>
 </project>
