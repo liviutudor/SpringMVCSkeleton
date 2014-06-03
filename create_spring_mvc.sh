@@ -63,15 +63,10 @@ cat >>${TMPDIR}/pom.xml<<'POM_XML'
 	<properties>
 		<project.build.jdkVersion>1.6</project.build.jdkVersion>
 		<spring.version>4.0.3.RELEASE</spring.version>
+		<junit.version>4.10</junit.version>
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.8.1</version>
-			<scope>test</scope>
-		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
@@ -103,10 +98,17 @@ cat >>${TMPDIR}/pom.xml<<'POM_XML'
 			<artifactId>spring-context</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+		<!-- Test deps -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<version>${spring.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
