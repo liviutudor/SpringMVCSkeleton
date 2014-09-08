@@ -22,6 +22,7 @@ GROUP_ID="liviutudor"
 # java package for sources
 PKG_NAME="liv"
 TMPDIR=$(mktemp -d /tmp/$PRJ_NAME.XXXXXXX)
+BUCKET_NAME="liviutudor.repository"
 
 # Top level dir
 mkdir -p $TMPDIR/src/main/{resources/config,webapp/WEB-INF/jsp,java/$PKG_NAME} $TMPDIR/src/test/java/$PKG_NAME $TMPDIR/target
@@ -39,9 +40,12 @@ cat >${TMPDIR}/pom.xml<<POM_XMLEXPAND
 	<inceptionYear>$CURR_YEAR</inceptionYear>
 	<description>$PRJ_DESC</description>
 	<url>$PRJ_URL</url>
-POM_XMLEXPAND
 
-cat >>${TMPDIR}/pom.xml<<'POM_XML'
+	<organization>
+		<name>Liviu Tudor</name>
+		<url>http://liviutudor.com</url>
+	</organization>
+
 	<developers>
 		<developer>
 			<name>Liviu Tudor</name>
@@ -49,7 +53,43 @@ cat >>${TMPDIR}/pom.xml<<'POM_XML'
 			<email>me at liviutudor.com</email>
 		</developer>
 	</developers>
+
+ 	<scm>
+	    <connection>scm:git:git@github.com:liviutudor/${PRJ_NAME}.git</connection>
+    	<developerConnection>scm:git:git@github.com:liviutudor/${PRJ_NAME}.git</developerConnection>
+    	<url>http://github.com/liviutudor/$PRJ_NAME</url>
+		<tag>HEAD</tag>
+	</scm>
+
+	<!-- This enables using an S3-based repo -->
+	<distributionManagement>
+		<repository>
+			<id>aws-release</id>
+			<name>AWS Release Repository</name>
+			<url>s3://$BUCKET_NAME/release</url>
+		</repository>
+		<snapshotRepository>
+			<id>aws-snapshot</id>
+			<name>AWS Snapshot Repository</name>
+			<url>s3://$BUCKET_NAME/snapshot</url>
+		</snapshotRepository>
+    </distributionManagement>
+
 	<repositories>
+		<!-- S3-based repo -->
+		<repository>
+			<id>aws-release</id>
+			<name>AWS Release Repository</name>
+			<url>s3://$BUCKET_NAME/release</url>
+		</repository>
+		<repository>
+			<id>aws-snapshot</id>
+			<name>AWS Snapshot Repository</name>
+			<url>s3://$BUCKET_NAME/snapshot</url>
+		</repository>
+POM_XMLEXPAND
+
+cat >>${TMPDIR}/pom.xml<<'POM_XML'
 		<repository>
 			<snapshots>
 				<enabled>false</enabled>
@@ -65,26 +105,30 @@ cat >>${TMPDIR}/pom.xml<<'POM_XML'
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+		<maven.aws-maven.version>4.8.0.RELEASE</maven.aws-maven.version>
 		<maven.compiler.version>3.1</maven.compiler.version>
+		<maven.release.version>2.5</maven.release.version>
 		<maven.resources.version>2.6</maven.resources.version>
-		<maven.surefire.version>2.14.1</maven.surefire.version>
+		<maven.surefire.version>2.17</maven.surefire.version>
 		<maven.war.version>2.4</maven.war.version>
 
-		<spring.version>4.0.3.RELEASE</spring.version>
-		<junit.version>4.10</junit.version>
+		<jstl.version>1.2</jstl.version>
+		<servlet-api.version>2.5</servlet-api.version>
+		<spring.version>4.0.5.RELEASE</spring.version>
+		<junit.version>4.11</junit.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
+			<version>${servlet-api.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
-			<version>1.2</version>
+			<version>${jstl.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -132,8 +176,16 @@ POM_XML
 cat>>${TMPDIR}/pom.xml<<POM_XMLEXPAND
 		<finalName>$PRJ_NAME</finalName>
 POM_XMLEXPAND
+
 cat>>${TMPDIR}/pom.xml<<'POM_XML'
 		<defaultGoal>install</defaultGoal>
+        <extensions>
+            <extension>
+                <groupId>org.springframework.build</groupId>
+                <artifactId>aws-maven</artifactId>
+                <version>${maven.aws-maven.version}</version>
+            </extension>
+        </extensions>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -167,7 +219,18 @@ cat>>${TMPDIR}/pom.xml<<'POM_XML'
 				<configuration>
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
-			</plugin>			
+			</plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>${maven.release.version}</version>
+                <configuration>
+                    <allowTimestampedSnapshots>true</allowTimestampedSnapshots>
+                    <preparationGoals>clean verify package install</preparationGoals>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 </project>
