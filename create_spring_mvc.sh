@@ -8,7 +8,7 @@ CURR_YEAR=`date +%Y`
 
 # Name of the project (directory will be created with same name)
 PRJ_NAME="livmvc"
-if [ "$1" != "" ] ; then
+if [ ! -z "$1" ] ; then
 	PRJ_NAME="$1"
 	echo "Using project name $PRJ_NAME"
 fi
@@ -21,7 +21,7 @@ PRJ_VERSION="0.0.1"
 GROUP_ID="liviutudor"
 # java package for sources
 PKG_NAME="liv"
-TMPDIR="/tmp/$PRJ_NAME.$$"
+TMPDIR=$(mktemp -d /tmp/$PRJ_NAME.XXXXXXX)
 
 # Top level dir
 mkdir -p $TMPDIR/src/main/{resources/config,webapp/WEB-INF/jsp,java/$PKG_NAME} $TMPDIR/src/test/java/$PKG_NAME $TMPDIR/target
