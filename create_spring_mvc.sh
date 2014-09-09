@@ -280,48 +280,41 @@ WEB_XML
 cat >$TMPDIR/src/main/webapp/WEB-INF/$PRJ_NAME-servlet.xml <<SERVLET_XML
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:p="http://www.springframework.org/schema/p"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="
-        http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-        http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+    xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:task="http://www.springframework.org/schema/task"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+       http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd
+       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
 
-    <context:component-scan base-package="$PKG_NAME"/>
-
-    <bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
-        <property name="prefix" value="/WEB-INF/jsp/"/>
-        <property name="suffix" value=".jsp"/>
+    <!-- **** BEGIN: Config files **** -->
+    <bean
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath*:config/*.properties</value>
+            </list>
+        </property>
+        <property name="ignoreResourceNotFound" value="true" />
     </bean>
+    <!-- **** END: Config files **** -->
 
+    <mvc:annotation-driven />
+    <context:component-scan base-package="liv" />
+
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:order="1">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+        <property name="prefix" value="/WEB-INF/jsp/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
 </beans>
 SERVLET_XML
 
-cat >$TMPDIR/src/main/webapp/WEB-INF/applicationContext.xml <<APP_CONTEXT_XML
-<?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-        xmlns:context="http://www.springframework.org/schema/context"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
-
-        <bean
-                class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-                <property name="locations">
-                        <list>
-                                <value>classpath*:config/*.properties</value>
-                        </list>
-                </property>
-                <property name="ignoreResourceNotFound" value="true" />
-        </bean>
-</beans>
-APP_CONTEXT_XML
-
 cat > $TMPDIR/src/main/webapp/WEB-INF/jsp/home.jsp << HOME_JSP
-<%@ taglib uri="http://java.sun.com/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@page import="$PKG_NAME.*"%>
 <jsp:useBean id="param_name" scope="request" class="java.lang.String" />
 <html>
@@ -329,7 +322,10 @@ cat > $TMPDIR/src/main/webapp/WEB-INF/jsp/home.jsp << HOME_JSP
 <title>$PRJ_NAME</title>
 </head>
 <body>
-<p>Hello, <c:out value="\${param_name}"/>!</p>
+HOME_JSP
+
+cat >>$TMPDIR/src/main/webapp/WEB-INF/jsp/home.jsp<<'HOME_JSP'
+<p>Hello, <c:out value="${param_name}"/>!</p>
 </body>
 </html>
 HOME_JSP
