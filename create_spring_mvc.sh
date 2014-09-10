@@ -237,7 +237,10 @@ cat>>${TMPDIR}/pom.xml<<'POM_XML'
 POM_XML
 
 cat > $TMPDIR/src/main/webapp/WEB-INF/web.xml <<WEB_XML
-<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="$PRJ_NAME" version="2.5">
 <web-app>
   <display-name>$PRJ_NAME</display-name>
      <servlet>
